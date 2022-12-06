@@ -21,5 +21,5 @@ func main() {
 	app.Get("/sys_status", controller.GetSysStatus)
 	app.Get("/ws/sys_status", websocket.New(controller.PushSysStatus))
 
-	app.Listen("0.0.0.0:8080")
+	app.Listen("0.0.0.0:8081")
 }

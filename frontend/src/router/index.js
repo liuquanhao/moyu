@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HardwareInfo from '@/components/HardwareInfo'
+import SystemInfo from '@/pages/SystemInfo'
 
 Vue.use(Router)
 
@@ -8,8 +8,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HardwareInfo',
-      component: HardwareInfo
+      name: 'SystemInfo',
+      component: SystemInfo
     }
   ]
 })

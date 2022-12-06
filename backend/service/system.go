@@ -10,7 +10,7 @@ import (
 )
 
 type SystemInfo struct {
-	Hostname        string       `json:"hostanme"`
+	Hostname        string       `json:"hostname"`
 	Distribution    string       `json:"distribution"`
 	Arch            string       `json:"arch"`
 	Kernel          string       `json:"kernel"`
