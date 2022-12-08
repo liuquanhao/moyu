@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import SystemInfo from '@/pages/SystemInfo'
+import SystemPage from '@/pages/SystemPage'
 
 Vue.use(Router)
 
@@ -8,8 +8,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'SystemInfo',
-      component: SystemInfo
+      name: 'SystemPage',
+      component: SystemPage
     }
   ]
 })
