@@ -1,6 +1,6 @@
 <template>
     <main-layout>
-        <host-info :info="host_info" />
+        <host-info :info="host_info" :uptime="uptime" />
         <cpu-info :info="cpu_info" :cpu_percent="cpu_percent" />
         <load-info :status="load_avg" />
         <mem-info :info="memory_info" :status="memory_status" />
@@ -38,6 +38,7 @@
                 memory_status: {},
                 ifces: {},
                 partitions: {},
+                uptime: {},
                 timestamp: 0,
             }
         },
@@ -45,12 +46,12 @@
             this.initData()
             this.initWs()
         },
-        // destroyed() {
-        //     this.ws.close()
-        // },
+        destroyed() {
+            this.ws.close()
+        },
         methods: {
             initData() {
-                this.axios.get("http://134.195.88.86:8081/sys_info").then(
+                this.axios.get("/sys_info").then(
                     res => {
                         this.host_info = res.data.host_info
                         this.cpu_info = res.data.cpu_info
@@ -67,7 +68,9 @@
                 })
             },
             initWs() {
-                this.ws = new WebSocket("ws://134.195.88.86:8081/ws/sys_status")
+                var wsProtocol = window.location.protocol == "https:" ? "wss://" : "ws://";
+                var wsPort = window.location.port == 80 ? "" : ":" + window.location.port;
+                this.ws = new WebSocket(wsProtocol + window.location.hostname + wsPort + "/ws/sys_status")
                 this.ws.onopen = this.wsOnOpen
                 this.ws.onerror = this.wsOnError
                 this.ws.onmessage = this.wsOnMessage
@@ -87,6 +90,7 @@
                 this.memory_status = systemStatus.memory_status
                 this.ifces = systemStatus.network_info.ifces
                 this.partitions = systemStatus.disk_info.partitions
+                this.uptime = systemStatus.uptime
             },
             wsOnClose(e) {
                 console.log("ws断开连接")

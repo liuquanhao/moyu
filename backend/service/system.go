@@ -22,6 +22,7 @@ type SystemStatus struct {
 	MemoryStatus *MemoryStatus `json:"memory_status"`
 	DiskInfo     *DiskInfo     `json:"disk_info"`
 	NetworkInfo  *NetworkInfo  `json:"network_info"`
+	Uptime       uint64        `json:"uptime"`
 	Timestamp    int64         `json:"timestamp"`
 }
 
@@ -45,6 +46,7 @@ func GetSystemStatus() *SystemStatus {
 		MemoryStatus: GetMemoryStatus(),
 		DiskInfo:     GetDiskInfo(),
 		NetworkInfo:  GetNetworkInfo(),
+		Uptime:       GetUptime(),
 		Timestamp:    time.Now().Unix(),
 	}
 }

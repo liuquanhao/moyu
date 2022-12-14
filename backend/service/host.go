@@ -24,3 +24,8 @@ func GetHostInfo() *HostInfo {
 		Uptime:          hostInfo.Uptime,
 	}
 }
+
+func GetUptime() uint64 {
+	hostInfo, _ := host.Info()
+	return hostInfo.Uptime
+}

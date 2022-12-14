@@ -1,6 +1,10 @@
 package service
 
-import "github.com/shirou/gopsutil/v3/disk"
+import (
+	"strings"
+
+	"github.com/shirou/gopsutil/v3/disk"
+)
 
 type Partition struct {
 	Device      string  `json:"device"`
@@ -20,6 +24,9 @@ func GetDiskInfo() *DiskInfo {
 	diskInfo := new(DiskInfo)
 	partitionStats, _ := disk.Partitions(false)
 	for _, partitionStat := range partitionStats {
+		if strings.HasPrefix(partitionStat.Mountpoint, "/snap") {
+			continue
+		}
 		usageStat, _ := disk.Usage(partitionStat.Mountpoint)
 		partition := &Partition{
 			Device:      partitionStat.Device,

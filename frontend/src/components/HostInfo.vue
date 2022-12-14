@@ -9,7 +9,7 @@
                 </el-col>
                 <el-col :span="4">
                     <el-tag>uptime</el-tag>
-                    <span>{{ info.uptime | humanSec }}</span>
+                    <span>{{ ut | humanSec }}</span>
                 </el-col>
                 <el-col :span="4">
                     <el-tag>系统版本</el-tag>
@@ -36,11 +36,14 @@
     import {humanSec} from "@/common/filters"
     export default {
         name: "hostinfo",
-        props: ['info'],
+        props: ['info', 'uptime'],
         computed: {
-            vt: function (){
+            vt: function() {
                 return this.info.virtual_platform ? this.info.virtual_platform : '未知'
             },
+            ut: function() {
+                return this.uptime ? this.uptime : this.info.uptime
+            }
         },
         filters: {
             humanSec: function(sec) {
