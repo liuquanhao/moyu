@@ -38,7 +38,7 @@ func GetSystemInfo() *SystemInfo {
 }
 
 func GetSystemStatus() *SystemStatus {
-	cpuPercent, _ := cpu.Percent(0, true)
+	cpuPercent, _ := cpu.Percent(time.Duration(1)*time.Second, true)
 	loadAvg, _ := load.Avg()
 	return &SystemStatus{
 		CPUPercent:   cpuPercent,

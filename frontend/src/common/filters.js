@@ -20,19 +20,19 @@ export function humanByte(size) {
  */
 export function humanSec(sec) {
     if (sec < 60) {
-        return Math.trunc(sec) + " 秒";
+        return Math.trunc(sec) + " seconds";
     } else if (sec < 3600) {
         var sec = sec % 60
         var min = Math.trunc(sec / 60);
-        return min + " 分 " + sec + " 秒"
+        return min + " minutes " + sec + " seconds"
     } else if (sec < 86400) {
         var min = Math.trunc(sec % 3600 / 60);
         var hour = Math.trunc(sec / 3600);
-        return hour + " 小时 " + min + " 分"
+        return hour + " hours " + min + " minutes"
     } else {
         var hour = Math.trunc(sec % 86400 / 3600);
         var day = Math.trunc(sec / 86400);
-        return day + " 天 " + hour + " 小时"
+        return day + " days " + hour + " hours"
     }
 }
 

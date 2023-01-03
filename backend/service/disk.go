@@ -24,7 +24,7 @@ func GetDiskInfo() *DiskInfo {
 	diskInfo := new(DiskInfo)
 	partitionStats, _ := disk.Partitions(false)
 	for _, partitionStat := range partitionStats {
-		if strings.HasPrefix(partitionStat.Mountpoint, "/snap") {
+		if strings.HasPrefix(partitionStat.Mountpoint, "/snap") || strings.HasPrefix(partitionStat.Mountpoint, "/loop") {
 			continue
 		}
 		usageStat, _ := disk.Usage(partitionStat.Mountpoint)
