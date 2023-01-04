@@ -14,5 +14,3 @@
         props: ['cpu_percent'],
     }
 </script>
-<style>
-</style>

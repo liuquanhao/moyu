@@ -7,7 +7,7 @@ export function humanByte(size) {
     } else if (size < 1024 * 1024) {
         return Math.trunc(size / 1024) + " KB"
     } else if (size < 1024 * 1024 * 1024) {
-        return Math.trunc(size / 1024 / 1024) + " MB"
+        return (size / 1024 / 1024).toFixed(2) + " MB"
     } else {
         return (size / 1024 / 1024 / 1024).toFixed(2) + " GB"
     }

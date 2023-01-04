@@ -4,7 +4,7 @@
             <div class="logo">
                 <span>MoYu</span>
             </div>
-            <div class="github">
+            <div class="github-logo">
                 <a href="https://github.com/liuquanhao/moyu" target="_blank" rel="noopener">
                     <i class="nes-icon github is-large"></i>
                 </a>
@@ -29,7 +29,7 @@
             </div>
         </el-main>
         <el-footer>
-            <p>Powered By: liuxu</p>
+            <p class="powered-by">Powered By: liuxu</p>
         </el-footer>
     </el-container>
 </template>
@@ -104,7 +104,8 @@
         },
         methods: {
             initData() {
-                this.axios.get("http://194.29.186.121:8081/sys_info").then(
+
+                this.axios.get("/sys_info").then(
                     res => {
                         this.host_info = res.data.host_info
                         this.cpu_info = res.data.cpu_info
@@ -121,9 +122,8 @@
                 })
             },
             initWs() {
-                var wsProtocol = window.location.protocol == "https:" ? "wss://" : "ws://";
-                // var wsPort = window.location.port == 80 ? "" : ":" + window.location.port;
-                var wsPort = ":8081"
+                let wsProtocol = window.location.protocol == "https:" ? "wss://" : "ws://";
+                let wsPort = window.location.port == "" ? "" : ":" + window.location.port;
                 this.ws = new WebSocket(wsProtocol + window.location.hostname + wsPort + "/ws/sys_status")
                 this.ws.onopen = this.wsOnOpen
                 this.ws.onerror = this.wsOnError
@@ -153,14 +153,16 @@
     }
 </script>
 
-<style>
+<style scoped>
 .logo {
     margin-right: auto;
+    margin-left: 10px;
     font-size: 50px;
     height: 10px;
 }
-.github {
+.github-logo {
     height: 10px;
+    margin-right: 10px;
 }
 .content-container {
     min-width: 780px;
@@ -184,5 +186,8 @@
 .el-footer {
     margin-top: 10px;
     margin-left: auto;
+}
+.powered-by {
+    margin-right: 10px;
 }
 </style>
