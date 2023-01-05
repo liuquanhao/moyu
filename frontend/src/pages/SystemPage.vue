@@ -76,7 +76,7 @@
                 if (this.cpu_info.cores.length > 0) {
                     cpu = this.cpu_info.cores[0].model + " @ " + this.cpu_info.cores[0].mhz
                     aes_ni = this.cpu_info.cores[0].flags.includes("aes")
-                    vm_x_amd_v = this.cpu_info.cores[0].flags.includes("vmx")
+                    vm_x_amd_v = this.cpu_info.cores[0].flags.includes("vmx") || this.cpu_info.cores[0].flags.includes("svm")
                 }
                 let virt = this.host_info.virtual_platform ? this.host_info.virtual_platform : 'unknown'
                 let uptime = this.host_info.uptime
