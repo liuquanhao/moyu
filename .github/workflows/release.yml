@@ -1,0 +1,47 @@
+name: 编译并发布项目
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  release:
+    name: "编译发布release程序"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+        go-version: [1.19.x]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Use Go ${{ matrix.go-version }}
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ matrix.go-version }}
+      - name: Build frontend
+        working-directory: ./frontend
+        run: |
+          npm install
+          npm run build
+      - name: Build x86_64 binary
+        working-directory: ./backend
+        run: |
+          go get .
+          GOOSARCH=linux/md64 go build --ldflags="-w -s" -o moyu-linux-amd64 .
+          GOOSARCH=linux/arm64 go build --ldflags="-w -s" -o moyu-linux-arm64 .
+          GOOSARCH=freebsd/amd64 go build --ldflags="-w -s" -o moyu-freebsd-amd64 .
+          GOOSARCH=freebasd/arm64 go build --ldflags="-w -s" -o moyu-freebsd-arm64 .
+          zip -r ../moyu-linux-amd64.zip moyu-linux-amd64
+          zip -r ../moyu-linux-arm64.zip moyu-linux-arm64
+          zip -r ../moyu-freebsd-amd64.zip moyu-freebsd-amd64
+          zip -r ../moyu-freebsd-arm64.zip moyu-freebsd-arm64
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          files: |
+            *.zip
+            
