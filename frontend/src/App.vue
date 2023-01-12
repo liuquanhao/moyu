@@ -19,7 +19,8 @@ export default {
 </script>
 
 <style>
-/* #app {
-} */
 @import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
+#app {
+  background: #FFFFFA;
+}
 </style>
