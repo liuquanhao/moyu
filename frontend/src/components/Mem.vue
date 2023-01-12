@@ -5,7 +5,7 @@
                 <span>Memory({{ info.memory | humanByte }}) | Used({{ usedMem | humanByte }}):</span>
             </el-col>
             <el-col>
-                <progress class="nes-progress is-primary" :value="status.memory_percent" max="100"></progress>
+                <progress class="nes-progress is-error" :value="status.memory_percent" max="100"></progress>
             </el-col>
         </el-row>
         <el-row>
@@ -13,7 +13,7 @@
                 <span>Swap({{ info.swap | humanByte }}) | Used({{ usedSwap | humanByte }}):</span>
             </el-col>
             <el-col>
-                <progress class="nes-progress is-primary" :value="status.swap_percent" max="100"></progress>
+                <progress class="nes-progress is-error" :value="status.swap_percent" max="100"></progress>
             </el-col>
         </el-row>
     </div>

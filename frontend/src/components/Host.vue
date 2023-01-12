@@ -53,7 +53,7 @@
             <el-col :xs="7" :sm="7" :md="5" :lg="4" :xl="4"><span>BW(u|d):</span></el-col>
             <el-col :xs="9" :sm="10" :md="9" :lg="8" :xl="8" v-for="ifce in info.ifces" :key="ifce.name">
                 <div class="nes-badge is-splited net-badge">
-                    <span class="is-success">{{ curNetSend(ifce.send_byte) | humanByte }}/s</span>
+                    <span class="is-dark">{{ curNetSend(ifce.send_byte) | humanByte }}/s</span>
                     <span class="is-warning">{{ curNetRecv(ifce.recv_byte) | humanByte  }}/s</span>
                 </div>
             </el-col>
@@ -62,7 +62,7 @@
             <el-col :xs="7" :sm="7" :md="5" :lg="4" :xl="4"><span>Traffic:</span></el-col>
             <el-col :xs="9" :sm="10" :md="9" :lg="8" :xl="8" v-for="ifce in info.ifces" :key="ifce.name">
                 <div class="nes-badge is-splited net-badge">
-                    <span class="is-success">{{ ifce.send_byte | humanByte }}</span>
+                    <span class="is-dark">{{ ifce.send_byte | humanByte }}</span>
                     <span class="is-warning">{{ ifce.recv_byte | humanByte  }}</span>
                 </div>
             </el-col>
