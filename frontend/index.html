@@ -2,11 +2,21 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="viewport" id="viewport" content="width=device-width,initial-scale=1.0, user-scalable=yes">
     <title>frontend</title>
   </head>
   <body>
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
+  <script>
+     let ua = navigator.userAgent;
+     let ipad = ua.match(/(iPad).*OS\s([\d_]+)/);
+     let isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/);
+     let isAndroid = ua.match(/(Android)\s+([\d.]+)/);
+     isMobile = isIphone || isAndroid;
+    if (isMobile) {
+      document.getElementById("viewport").setAttribute("content", "user-scalable=yes, width=device-width, initial-scale=" + 0.4);
+    }
+  </script>
 </html>
