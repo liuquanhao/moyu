@@ -15,9 +15,14 @@ func GetSysInfo(c *fiber.Ctx) error {
 func GetSysStatus(c *fiber.Ctx) error {
 	return c.JSON(service.GetSystemStatus())
 }
+
 func PushSysStatus(c *websocket.Conn) {
 	for {
 		c.WriteJSON(service.GetSystemStatus())
 		time.Sleep(1 * time.Second)
 	}
+}
+
+func GetPageData(c *fiber.Ctx) error {
+	return c.JSON(service.GetPageData())
 }

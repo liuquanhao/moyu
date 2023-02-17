@@ -21,19 +21,32 @@ jobs:
         uses: actions/setup-go@v3
         with:
           go-version: ${{ matrix.go-version }}
-      - name: Build frontend
-        working-directory: ./frontend
+      - name: Build moyu-manager frontend
+        working-directory: ./manager/frontend
         run: |
           npm install
           npm run build
-      - name: Build release binary
-        working-directory: ./backend
+      - name: Build moyu-manager release binary
+        working-directory: ./manager/backend
         run: |
           go get .
-          GOOS=linux GOARCH=amd64 go build --ldflags="-w -s" -o moyu-linux-amd64 .
-          GOOS=linux GOARCH=arm64 go build --ldflags="-w -s" -o moyu-linux-arm64 .
-          zip -r ../moyu-linux-amd64.zip moyu-linux-amd64
-          zip -r ../moyu-linux-arm64.zip moyu-linux-arm64
+          GOOS=linux GOARCH=amd64 go build --ldflags="-w -s" -o moyu-manager-linux-amd64 .
+          GOOS=linux GOARCH=arm64 go build --ldflags="-w -s" -o moyu-manager-linux-arm64 .
+          zip -r ../moyu-manager-linux-amd64.zip moyu-manager-linux-amd64
+          zip -r ../moyu-manager-linux-arm64.zip moyu-manager-linux-arm64
+      - name: Build moyu-page frontend
+        working-directory: ./page/frontend
+        run: |
+          npm install
+          npm run build
+      - name: Build moyu-page release binary
+        working-directory: ./page/backend
+        run: |
+          go get .
+          GOOS=linux GOARCH=amd64 go build --ldflags="-w -s" -o moyu-page-linux-amd64 .
+          GOOS=linux GOARCH=arm64 go build --ldflags="-w -s" -o moyu-page-linux-arm64 .
+          zip -r ../moyu-page-linux-amd64.zip moyu-page-linux-amd64
+          zip -r ../moyu-page-linux-arm64.zip moyu-page-linux-arm64
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"

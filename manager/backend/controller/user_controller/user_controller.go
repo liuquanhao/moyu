@@ -1,6 +1,7 @@
 package user_controller
 
 import (
+	"strconv"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -20,26 +21,27 @@ func Login(c *fiber.Ctx) error {
 	if err := validate.Struct(user); err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
-	db.First(&user)
+	db.Where(&user).Take(&user)
 	if user.Id == 0 {
-		return c.Status(fiber.StatusNotFound).SendString("Not Found User")
+		return c.Status(fiber.StatusUnauthorized).SendString("Not Found User")
 	}
 	s, _ := model.SessionStore.Get(c)
-	if s.Fresh() {
-		s.Set("uid", user.Id)
-		s.Set("sid", s.ID())
-		s.Set("ip", c.Context().RemoteIP().String())
-		s.Set("login", time.Unix(time.Now().Unix(), 0).UTC().String())
-		s.Set("ua", string(c.Request().Header.UserAgent()))
-		err := s.Save()
-		if err != nil {
-			return c.Status(fiber.StatusServiceUnavailable).SendString(err.Error())
-		}
-
+	s.Set("uid", user.Id)
+	s.Set("sid", s.ID())
+	s.Set("ip", c.Context().RemoteIP().String())
+	s.Set("login", time.Unix(time.Now().Unix(), 0).UTC().String())
+	s.Set("ua", string(c.Request().Header.UserAgent()))
+	err := s.Save()
+	if err != nil {
+		return c.Status(fiber.StatusServiceUnavailable).SendString(err.Error())
 	}
-	return c.JSON(fiber.Map{
-		"uid": user.Id,
-	})
+	cookie := new(fiber.Cookie)
+	cookie.Name = "uid"
+	cookie.Value = strconv.FormatUint(uint64(user.Id), 10)
+	cookie.Expires = time.Now().Add(24 * time.Hour)
+	c.Cookie(cookie)
+	c.Status(fiber.StatusNoContent)
+	return nil
 }
 
 func Account(c *fiber.Ctx) error {
@@ -62,6 +64,6 @@ func Logout(c *fiber.Ctx) error {
 	if err := s.Destroy(); err != nil {
 		return c.Status(fiber.StatusServiceUnavailable).SendString(err.Error())
 	}
-	c.Status(fiber.StatusOK)
+	c.Status(fiber.StatusNoContent)
 	return nil
 }

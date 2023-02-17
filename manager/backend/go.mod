@@ -6,12 +6,14 @@ require (
 	github.com/go-playground/validator/v10 v10.11.2
 	github.com/gofiber/fiber/v2 v2.42.0
 	github.com/gofiber/storage/sqlite3 v0.0.0-20230206084615-41a84b36b572
+	github.com/gofiber/websocket/v2 v2.1.4
 	gorm.io/driver/sqlite v1.4.4
 	gorm.io/gorm v1.24.5
 )
 
 require (
 	github.com/andybalholm/brotli v1.0.4 // indirect
+	github.com/fasthttp/websocket v1.5.1 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/google/uuid v1.3.0 // indirect

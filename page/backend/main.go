@@ -30,6 +30,7 @@ func main() {
 
 	app.Get("/sys_info", controller.GetSysInfo)
 	app.Get("/sys_status", controller.GetSysStatus)
+	app.Get("/api/page_data", controller.GetPageData)
 	app.Get("/ws/sys_status", websocket.New(controller.PushSysStatus))
 
 	stripped, err := fs.Sub(frontend, "dist")

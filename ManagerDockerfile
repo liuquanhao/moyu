@@ -1,0 +1,11 @@
+FROM alpine:3.17.1 as builder
+COPY . .
+RUN apk add go nodejs npm
+RUN cd manager/frontend && npm install && npm run build && \
+    cd ../backend && go get . && go build -o moyu-manager --ldflags="-w -s" .
+
+FROM alpine:3.17.1 as deploy
+EXPOSE 8080
+COPY --from=builder backend/moyu-manager .
+ENV PORT=8080
+ENTRYPOINT /moyu-manager

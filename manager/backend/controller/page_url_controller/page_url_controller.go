@@ -39,5 +39,13 @@ func List(c *fiber.Ctx) error {
 	db := model.DBConn
 	var pageUrls []remote_url_model.PageUrl
 	db.Find(&pageUrls)
+	s, _ := model.SessionStore.Get(c)
+	if !s.Fresh() {
+		return c.JSON(pageUrls)
+	}
+	// unlogin
+	for _, pageUrl := range pageUrls {
+		pageUrl.PageUrl = ""
+	}
 	return c.JSON(pageUrls)
 }

@@ -1,0 +1,11 @@
+FROM alpine:3.17.1 as builder
+COPY . .
+RUN apk add go nodejs npm
+RUN cd page/frontend && npm install && npm run build && \
+    cd ../backend && go get . && go build -o moyu-page --ldflags="-w -s" .
+
+FROM alpine:3.17.1 as deploy
+EXPOSE 8081
+COPY --from=builder backend/moyu-page .
+ENV PORT=8081
+ENTRYPOINT /moyu-page
