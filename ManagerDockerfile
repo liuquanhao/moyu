@@ -6,6 +6,6 @@ RUN cd manager/frontend && npm install && npm run build && \
 
 FROM alpine:3.17.1 as deploy
 EXPOSE 8080
-COPY --from=builder backend/moyu-manager .
-ENV PORT=8080
-ENTRYPOINT /moyu-manager
+RUN mkdir -p moyu-manager/bin && mkdir -p moyu-manager/db
+COPY --from=builder backend/moyu-manager moyu-manager/bin/
+ENTRYPOINT backend/bin/moyu-manager

@@ -47,6 +47,7 @@ jobs:
           GOOS=linux GOARCH=arm64 go build --ldflags="-w -s" -o moyu-page-linux-arm64 .
           zip -r ../moyu-page-linux-amd64.zip moyu-page-linux-amd64
           zip -r ../moyu-page-linux-arm64.zip moyu-page-linux-arm64
+          zip -r ../init.sql.zip manager/backend/database/init.sql
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
