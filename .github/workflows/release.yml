@@ -32,9 +32,9 @@ jobs:
           go get .
           GOOS=linux GOARCH=amd64 go build --ldflags="-w -s" -o moyu-manager-linux-amd64 .
           GOOS=linux GOARCH=arm64 go build --ldflags="-w -s" -o moyu-manager-linux-arm64 .
-          zip -r ../moyu-manager-linux-amd64.zip moyu-manager-linux-amd64
-          zip -r ../moyu-manager-linux-arm64.zip moyu-manager-linux-arm64
-          zip -r ../init.sql.zip database/init.sql
+          zip -r ../../moyu-manager-linux-amd64.zip moyu-manager-linux-amd64
+          zip -r ../../moyu-manager-linux-arm64.zip moyu-manager-linux-arm64
+          zip -r ../../init.sql.zip database/init.sql
       - name: Build moyu-page frontend
         working-directory: ./page/frontend
         run: |
@@ -46,8 +46,8 @@ jobs:
           go get .
           GOOS=linux GOARCH=amd64 go build --ldflags="-w -s" -o moyu-page-linux-amd64 .
           GOOS=linux GOARCH=arm64 go build --ldflags="-w -s" -o moyu-page-linux-arm64 .
-          zip -r ../moyu-page-linux-amd64.zip moyu-page-linux-amd64
-          zip -r ../moyu-page-linux-arm64.zip moyu-page-linux-arm64
+          zip -r ../../moyu-page-linux-amd64.zip moyu-page-linux-amd64
+          zip -r ../../moyu-page-linux-arm64.zip moyu-page-linux-arm64
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
