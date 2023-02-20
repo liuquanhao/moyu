@@ -59,7 +59,7 @@
     PORT=8080 ./bin/moyu-manager
     ```
 
-4. 添加墨鱼page。如本项目在线demo：`https://moyu.linux.plus/#/`，直接复制`https://moyu.linux.plus/`到`添加墨鱼page页面`即可。在墨鱼manager中，如果已登录，可以点击title访问墨鱼page。
+4. 添加墨鱼page。如本项目在线demo：`https://moyu-manager.linux.plus/`，直接复制墨鱼page主页`https://moyu-page.linux.plus/`到`添加墨鱼page页面`即可。在墨鱼manager中，如果已登录，可以点击title访问墨鱼page。
 
 ## 编译使用
 
