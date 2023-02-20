@@ -46,7 +46,7 @@
                     return
                 }
                 this.isClick = true
-                this.axios.post('/api/login', {
+                this.axios.post('./api/login', {
                     user: this.user,
                     token: this.token
                 }, {withCredentials: true}).then(res => {

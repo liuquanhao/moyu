@@ -53,7 +53,17 @@ func initSession() {
 }
 
 func setupRoutes(app *fiber.App) {
-	api := app.Group("/api")
+	app.Use(cors.New(cors.Config{
+		AllowOrigins:     "*",
+		AllowCredentials: true,
+	}))
+	base := app.Group(os.Getenv("BASEURL"))
+
+	ws := base.Group("/ws")
+	ws.Use("/*", middleware.UpgradeOptions)
+	ws.Get("/page_data", websocket.New(page_data_controller.PushPageData))
+
+	api := base.Group("/api")
 	api.Post("/login", user_controller.Login)
 	api.Get("/page_url", page_url_controller.List)
 
@@ -63,7 +73,14 @@ func setupRoutes(app *fiber.App) {
 	logged.Post("/page_url", page_url_controller.Add)
 	logged.Delete("/page_url/:id", page_url_controller.Delete)
 
-	app.Get("/ws/page_data", websocket.New(page_data_controller.PushPageData))
+	stripped, err := fs.Sub(frontend, "dist")
+	if err != nil {
+		log.Fatal(err)
+	}
+	base.Use("/", filesystem.New(filesystem.Config{
+		Root:   http.FS(stripped),
+		Browse: true,
+	}))
 }
 
 //go:embed dist
@@ -71,24 +88,10 @@ var frontend embed.FS
 
 func main() {
 	app := fiber.New()
-	app.Use(cors.New(cors.Config{
-		AllowOrigins:     "http://194.29.186.121:8080",
-		AllowCredentials: true,
-	}))
-	app.Use("/ws/*", middleware.UpgradeOptions)
 
 	initDatabase()
 	initSession()
 	setupRoutes(app)
-
-	stripped, err := fs.Sub(frontend, "dist")
-	if err != nil {
-		log.Fatal(err)
-	}
-	app.Use("/", filesystem.New(filesystem.Config{
-		Root:   http.FS(stripped),
-		Browse: true,
-	}))
 
 	host := os.Getenv("HOST")
 	port := os.Getenv("PORT")

@@ -12,10 +12,6 @@ func GetSysInfo(c *fiber.Ctx) error {
 	return c.JSON(service.GetSystemInfo())
 }
 
-func GetSysStatus(c *fiber.Ctx) error {
-	return c.JSON(service.GetSystemStatus())
-}
-
 func PushSysStatus(c *websocket.Conn) {
 	for {
 		c.WriteJSON(service.GetSystemStatus())

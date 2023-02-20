@@ -105,7 +105,7 @@
         methods: {
             initData() {
 
-                this.axios.get("/sys_info").then(
+                this.axios.get("./api/sys_info").then(
                     res => {
                         this.host_info = res.data.host_info
                         this.cpu_info = res.data.cpu_info
@@ -124,7 +124,7 @@
             initWs() {
                 let wsProtocol = window.location.protocol == "https:" ? "wss://" : "ws://";
                 let wsPort = window.location.port == "" ? "" : ":" + window.location.port;
-                this.ws = new WebSocket(wsProtocol + window.location.hostname + wsPort + "/ws/sys_status")
+                this.ws = new WebSocket(wsProtocol + window.location.hostname + wsPort + window.location.pathname + "ws/sys_status")
                 this.ws.onopen = this.wsOnOpen
                 this.ws.onerror = this.wsOnError
                 this.ws.onmessage = this.wsOnMessage

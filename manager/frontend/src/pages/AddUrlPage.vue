@@ -66,7 +66,7 @@
                     return
                 }
                 this.isClickAdd = true
-                this.axios.post('/api/page_url', {
+                this.axios.post('./api/page_url', {
                     'title': this.title,
                     'page_url': this.pageUrl,
                 }, {withCredentials: true}).then(res => {

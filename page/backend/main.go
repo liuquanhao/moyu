@@ -25,19 +25,20 @@ func main() {
 		JSONDecoder: sonic.Unmarshal,
 	})
 	app.Use(cors.New())
+	base := app.Group(os.Getenv("BASEURL"))
+	ws := base.Group("/ws")
+	ws.Use("/*", middleware.UpgradeOptions)
+	ws.Get("/sys_status", websocket.New(controller.PushSysStatus))
 
-	app.Use("/ws/*", middleware.UpgradeOptions)
-
-	app.Get("/sys_info", controller.GetSysInfo)
-	app.Get("/sys_status", controller.GetSysStatus)
-	app.Get("/api/page_data", controller.GetPageData)
-	app.Get("/ws/sys_status", websocket.New(controller.PushSysStatus))
+	api := base.Group("/api")
+	api.Get("/sys_info", controller.GetSysInfo)
+	api.Get("/page_data", controller.GetPageData)
 
 	stripped, err := fs.Sub(frontend, "dist")
 	if err != nil {
 		log.Fatal(err)
 	}
-	app.Use("/", filesystem.New(filesystem.Config{
+	base.Use("/", filesystem.New(filesystem.Config{
 		Root:   http.FS(stripped),
 		Browse: true,
 	}))

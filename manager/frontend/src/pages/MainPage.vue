@@ -58,7 +58,7 @@
             },
             deletePage: function(id, event) {
                 this.btnDisabledStatus(event.target, true, 'is-error', 'is-disabled')
-                this.axios.delete('/api/page_url/' + id, {withCredentials: true})
+                this.axios.delete('./api/page_url/' + id, {withCredentials: true})
                 .then(res => {
                     this.btnDisabledStatus(event.target, false, 'is-disabled', 'is-error')
                     this.dropDataPage(id)
@@ -83,7 +83,7 @@
                 element.classList.add(addClass)
             },
             initData() {
-                this.axios.get('/api/page_url/', {withCredentials: true})
+                this.axios.get('./api/page_url/', {withCredentials: true})
                 .then(res => {
                     this.pages = res.data
                 })
@@ -94,7 +94,7 @@
             initWs() {
                 let wsProtocol = window.location.protocol == "https:" ? "wss://" : "ws://"
                 let wsPort = window.location.port == "" ? "" : ":" + window.location.port
-                this.ws = new WebSocket(wsProtocol + window.location.hostname + wsPort + "/ws/page_data")
+                this.ws = new WebSocket(wsProtocol + window.location.hostname + wsPort + window.location.pathname + "ws/page_data")
                 this.ws.onopen = this.wsOnOpen
                 this.ws.onerror = this.wsOnError
                 this.ws.onmessage = this.wsOnMessage

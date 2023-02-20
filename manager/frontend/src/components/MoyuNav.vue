@@ -35,7 +35,7 @@
             },
             logout: function() {
                 this.isClick = true
-                this.axios.post('/api/logout', {}, {withCredentials: true}).then(res => {
+                this.axios.post('./api/logout', {}, {withCredentials: true}).then(res => {
                     this.$cookies.remove('uid')
                     this.isClick = false
                     if (this.$route.name == 'MainPage') {

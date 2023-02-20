@@ -181,3 +181,35 @@ sqlite: ^3.0
     ```bash
     docker run -e PORT=8080 -v ./db:/moyu-manager/db  moyu-manager
     ```
+
+## FAQ
+
+1. 我使用nginx做反代，设置了`location /moyu{}`该怎么办
+
+    答：运行墨鱼page或墨鱼manager时，添加`BASEURL=/moyu`环境变量运行。
+
+2. 运行墨鱼manager，程序报找不到`moyu_manager.db`怎么办
+
+    答：确认自己的目录结构是不是如下：
+    ```bash
+    ├── bin
+    │   └── moyu-manager
+    └── db
+        └── moyu_manager.db
+    ```
+    然后进入`bin/`目录下运行`moyu-manager`
+
+3. 我想修改账号或者token
+
+    答：运行sqlite3，通过sql修改。
+    ```bash
+    sqlite3 moyu_manager.db
+    sqlite> UPDATE users SET token='token123' WHERE user='user'
+    ```
+
+4. 我想创建新的账户和token
+    答：运行sqlite3，通过sql添加。
+    ```bash
+    sqlite3 moyu_manager.db
+    sqlite> INSERT INTO users(user, token) VALUES('user1', 'token1');
+    ```
