@@ -19,8 +19,8 @@
                 <el-col :span="3"><span v-if="page.page_data" class="nes-text is-primary">{{ page.page_data.disk_percent | humanPerc }}%</span></el-col>
                 <el-col :span="5">
                     <div v-if="page.page_data" class="nes-badge is-splited net-badge">
-                        <span class="is-dark">{{ page.page_data.net_send | curNetSend(page.id, page.page_data.timestamp) | humanByte(0) }}</span>
-                        <span class="is-warning">{{ page.page_data.net_recv | curNetRecv(page.id, page.page_data.timestamp) | humanByte(0) }}</span>
+                        <span class="is-dark">{{ page.page_data.net_send_rate | humanByte }}</span>
+                        <span class="is-warning">{{ page.page_data.net_recv_rate | humanByte }}</span>
                     </div>
                 </el-col>
                 <el-col :span="2"><button type="button" class="nes-btn" :class="[logged ? 'is-error' : 'is-disabled']" @click="deletePage(page.id, $event)">Delete</button></el-col>
@@ -101,10 +101,10 @@
                 this.ws.onclose = this.wsOnClose
             },
             wsOnOpen() {
-                console.log("ws connect success.")
+                console.log("ws connect success")
             },
             wsOnError() {
-                console.log("ws connect fail.")
+                console.log("ws connect fail")
                 this.initWs()
             },
             wsOnMessage(e) {
@@ -119,12 +119,42 @@
                 page.id = this.pages[idx].id
                 page.title = this.pages[idx].title
                 page.page_url = this.pages[idx].page_url
+                pageInfo.page_data.net_send_rate = this.curNetSend(pageInfo.page_data.net_send, pageInfo.page_id, pageInfo.page_data.timestamp)
+                pageInfo.page_data.net_recv_rate = this.curNetRecv(pageInfo.page_data.net_recv, pageInfo.page_id, pageInfo.page_data.timestamp)
                 page.page_data = pageInfo.page_data
                 this.$set(this.pages, idx, page)
             },
             wsOnClose(e) {
-                console.log("ws close.")
-            }
+                console.log("ws close")
+            },
+            curNetSend: function(curSend, id, ts) {
+                let lastSend = sessionStorage.getItem(id + "-lastSend")
+                let lastSendTs = sessionStorage.getItem(id + "-lastSendTs")
+                if (!lastSend) {
+                    lastSend = curSend
+                }
+                sessionStorage.setItem(id + "-lastSend", curSend)
+                sessionStorage.setItem(id + "-lastSendTs", ts)
+                let dur = ts - lastSendTs
+                if (dur < 1) {
+                    return 0
+                }
+                return (curSend - lastSend)/(ts - lastSendTs)
+            },
+            curNetRecv: function(curRecv, id, ts) {
+                let lastRecv = sessionStorage.getItem(id + "-lastRecv")
+                let lastRecvTs = sessionStorage.getItem(id + "-lastRecvTs")
+                if (!lastRecv) {
+                    lastRecv = curRecv
+                }
+                sessionStorage.setItem(id + "-lastRecv", curRecv)
+                sessionStorage.setItem(id + "-lastRecvTs", ts)
+                let dur = ts - lastRecvTs
+                if (dur < 1) {
+                    return 0
+                }
+                return (curRecv - lastRecv)/(ts - lastRecvTs)
+            },
         },
         filters: {
             humanByte: function (size, num) {
@@ -155,34 +185,6 @@
                     return 0
                 }
                 return float.toFixed(1)
-            },
-            curNetSend: function(curSend, id, ts) {
-                let lastSend = sessionStorage.getItem(id + "-lastSend")
-                let lastSendTs = sessionStorage.getItem(id + "-lastSendTs")
-                if (!lastSend) {
-                    lastSend = curSend
-                }
-                sessionStorage.setItem(id + "-lastSend", curSend)
-                sessionStorage.setItem(id + "-lastSendTs", ts)
-                let dur = ts - lastSendTs
-                if (dur < 1) {
-                    return 0
-                }
-                return (curSend - lastSend)/(ts - lastSendTs)
-            },
-            curNetRecv: function(curRecv, id, ts) {
-                let lastRecv = sessionStorage.getItem(id + "-lastRecv")
-                let lastRecvTs = sessionStorage.getItem(id + "-lastRecvTs")
-                if (!lastRecv) {
-                    lastRecv = curRecv
-                }
-                sessionStorage.setItem(id + "-lastRecv", curRecv)
-                sessionStorage.setItem(id + "-lastRecvTs", ts)
-                let dur = ts - lastRecvTs
-                if (dur < 1) {
-                    return 0
-                }
-                return (curRecv - lastRecv)/(ts - lastRecvTs)
             },
         }
     }
