@@ -208,6 +208,7 @@ sqlite: ^3.0
     ```
 
 4. 我想创建新的账户和token
+
     答：运行sqlite3，通过sql添加。
     ```bash
     sqlite3 moyu_manager.db
