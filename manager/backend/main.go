@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/liuquanhao/moyu/controller/page_data_controller"
@@ -25,8 +26,8 @@ import (
 )
 
 func getCurrentPwd() string {
-	path, _ := os.Getwd()
-	return path
+	exePath, _ := os.Executable()
+	return filepath.Dir(exePath)
 }
 func initDatabase() {
 	var err error

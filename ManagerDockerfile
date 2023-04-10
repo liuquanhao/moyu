@@ -2,10 +2,10 @@ FROM alpine:3.17.1 as builder
 COPY . .
 RUN apk add go nodejs npm
 RUN cd manager/frontend && npm install && npm run build && \
-    cd ../backend && go get . && go build -o moyu-manager --ldflags="-w -s" .
+    cd ../backend && go get . && go build -o /tmp/moyu-manager --ldflags="-w -s" .
 
 FROM alpine:3.17.1 as deploy
 EXPOSE 8080
-RUN mkdir -p moyu-manager/bin && mkdir -p moyu-manager/db
-COPY --from=builder backend/moyu-manager moyu-manager/bin/
-ENTRYPOINT backend/bin/moyu-manager
+RUN mkdir -p /moyu-manager/bin && mkdir -p /moyu-manager/db
+COPY --from=builder /tmp/moyu-manager /moyu-manager/bin/
+ENTRYPOINT /moyu-manager/bin/moyu-manager

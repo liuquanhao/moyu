@@ -144,9 +144,9 @@ sqlite: ^3.0
 #### 墨鱼manager
 
 1. 墨鱼manager依赖`sqlite3`，需要使用`moyu/manager/backend/database/init.sql`创建和初始化用户表数据。
-2. 请使用一下目录格式存放`moyu-manager`程序和数据库。
+2. 请使用一下目录格式存放`moyu-manager`程序和数据库，容器挂载时需要注意目录位置，默认编译的项目根目录为`/moyu-manager`。
     ```bash
-    root@liuxu:/tmp/moyu/manager# tree
+    root@liuxu:/moyu-manager# tree
     .
     ├── bin
     │   └── moyu-manager
@@ -154,7 +154,7 @@ sqlite: ^3.0
         └── moyu_manager.db
     ```
 
-### 容器运行
+### 运行容器
 
 #### 墨鱼page
 
@@ -177,9 +177,14 @@ sqlite: ^3.0
     ```bash
     docker build -t moyu-manager -f ManagerDockerfile .
     ```
-2. 挂载数据库运行。
+2. 创建数据库。
     ```bash
-    docker run -e PORT=8080 -v ./db:/moyu-manager/db  moyu-manager
+    mkdir db
+    cat manager/backend/database/init.sql | sqlite3 db/moyu_manager.db
+    ```
+3. 挂载数据库运行。
+    ```bash
+    docker run -e PORT=8080 -p 8080:8080 -v ./db:/moyu-manager/db  moyu-manager
     ```
 
 ## FAQ
